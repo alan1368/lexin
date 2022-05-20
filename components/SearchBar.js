@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Animated,
-  TouchableHighlight,
+  Image,
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,31 +19,28 @@ const SearchBar = ({
   fetchData,
   selectedLanguage,
   setSelectedLanguage,
+  languageHandler,
 }) => {
   const value = useRef(new Animated.Value(0)).current;
   const [lang, setLang] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
 
   const onSubmitEdit = () => {
     fetchData();
   };
-  const languageHandler = () => {
-    setIsVisible(!isVisible);
-  };
 
-  useEffect(() => {
-    isVisible
-      ? Animated.timing(value, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: false,
-        }).start()
-      : Animated.timing(value, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: false,
-        }).start();
-  }, [isVisible]);
+  // useEffect(() => {
+  //   isVisible
+  //     ? Animated.timing(value, {
+  //         toValue: 1,
+  //         duration: 200,
+  //         useNativeDriver: false,
+  //       }).start()
+  //     : Animated.timing(value, {
+  //         toValue: 0,
+  //         duration: 200,
+  //         useNativeDriver: false,
+  //       }).start();
+  // }, [isVisible]);
 
   return (
     <NavigationContainer>
@@ -79,16 +76,16 @@ const SearchBar = ({
             >
               <Ionicons name="ios-earth" size={30} color="silver" />
             </TouchableOpacity>
-            <View>
-              <Text style={{ color: 'white' }}>{lang}</Text>
-            </View>
           </View>
         </View>
 
-        <Animated.ScrollView
+        {/* <Animated.ScrollView
           style={{
-            top: 500,
-            maxHeight: 650,
+            position: 'absolute',
+            display: `${isVisible ? 'flex' : 'none'}`,
+            opacity: value,
+            width: '100%',
+            alignContent: 'center',
             alignSelf: 'stretch',
             borderRadius: 25,
             padding: 20,
@@ -108,7 +105,7 @@ const SearchBar = ({
                   justifyContent: 'center',
                 }}
               >
-                <TouchableHighlight
+                <TouchableOpacity
                   style={{ height: 45, justifyContent: 'center' }}
                   onPress={() => {
                     setSelectedLanguage(language);
@@ -123,11 +120,11 @@ const SearchBar = ({
                   >
                     {language.label}
                   </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             );
           })}
-        </Animated.ScrollView>
+        </Animated.ScrollView> */}
       </View>
     </NavigationContainer>
   );

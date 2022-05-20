@@ -14,18 +14,22 @@ import Languages from './components/Languages';
 import SearchBar from './components/SearchBar';
 import TranslationOther from './components/TranslationOther';
 import Navbar from './components/Navbar';
+import TranslationSvenska from './components/TranslationSvenska';
 
 export default function App() {
-  const [word, setWord] = useState('få');
+  const [word, setWord] = useState('');
   const [translations, setTranslations] = useState();
   const [selectedLanguage, setSelectedLanguage] = useState({
     label: '',
-    value: 'sdh',
+    value: 'swe',
   });
   const [error, setError] = useState();
-  // console.log('word', word);
-  // console.log('selec', selectedLanguage);
-  // console.log(translations);
+  const [isVisible, setIsVisible] = useState(false);
+  console.log(selectedLanguage.value);
+  const languageHandler = () => {
+    setIsVisible(!isVisible);
+  };
+
   const fetchData = async () => {
     if (word && selectedLanguage) {
       try {
@@ -40,7 +44,7 @@ export default function App() {
           }
         );
         const data = await response.json();
-        if (data.Status === 'found') {
+        if (data?.Status === 'found') {
           setTranslations(data.Result);
         }
       } catch (error) {
@@ -60,25 +64,36 @@ export default function App() {
         selectedLanguage={selectedLanguage}
         setSelectedLanguage={setSelectedLanguage}
       /> */}
-      {/* <SearchBar
+      <SearchBar
         word={word}
         setWord={setWord}
         fetchData={fetchData}
         setSelectedLanguage={setSelectedLanguage}
-      /> */}
+        languageHandler={languageHandler}
+      />
       <View
         style={{
           backgroundColor: 'ghostwhite',
-          height: 680,
+          height: '90%',
+          width: '100%',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          width: '100%',
           position: 'absolute',
           bottom: 0,
           zIndex: -10,
+          flex: 1,
         }}
       >
-        <TranslationOther translations={translations} />
+        {isVisible ? (
+          <Languages
+            setSelectedLanguage={setSelectedLanguage}
+            languageHandler={languageHandler}
+          />
+        ) : selectedLanguage.value === 'swe' ? (
+          <TranslationSvenska translations={translations} />
+        ) : (
+          <TranslationOther translations={translations} />
+        )}
       </View>
     </View>
   );

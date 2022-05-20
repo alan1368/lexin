@@ -1,71 +1,158 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableHighlight,
+  Sound,
+} from 'react-native';
 import React from 'react';
+import { AntDesign } from '@expo/vector-icons';
 
 const TranslationSvenska = ({ translations }) => {
   return (
-    <ScrollView style={styles.translateContainer}>
-      {translations?.map((translation) => {
-        const { Value, Type, Phonetic, Inflection } = translation;
+    <ScrollView style={styles.container}>
+      {translations?.map((translation, index) => {
+        const { Value, Type, Phonetic, Inflection, Lexeme, VariantID } =
+          translation;
         return (
-          <View key={translation.VariantID} style={{ marginBottom: 80 }}>
-            <Text>
-              <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{Value} </Text>{' '}
-              [{Phonetic?.Content}] {Type}
-            </Text>
-            <Text>
-              {'\uff1c'}
-              {Inflection?.map((inflection, index) => (
-                <Text key={index}>{inflection?.Content}, </Text>
-              ))}
-              {'\uff1e'}
-            </Text>
-            <View style={{ marginLeft: 10, fontSize: 20 }}>
-              <Text>{BaseLang?.Meaning}</Text>
-              <Text>
-                {'\uff1c'}
-                {BaseLang?.Graminfo}
-                {'\uff1e'}
-              </Text>
-
-              {BaseLang?.Comment && <Text>{BaseLang?.Comment}</Text>}
-
-              <Text style={{ fontWeight: 'bold' }}>
-                {TargetLang?.Translation} {TargetLang?.Comment}
-              </Text>
-              {BaseLang?.Example && (
-                <View style={{ marginTop: 20 }}>
-                  <Text style={{ fontSize: 18, marginBottom: 10 }}>
-                    Example:
-                  </Text>
-                  {BaseLang?.Example?.map((example) => (
-                    <Text
-                      style={{
-                        marginLeft: 15,
-                        marginBottom: 5,
-                      }}
-                      key={example.ID}
-                    >
-                      {'\u25CF'} {example.Content}
-                    </Text>
-                  ))}
-                </View>
-              )}
-
-              {BaseLang?.Idiom && (
-                <View style={{ marginTop: 20 }}>
-                  <Text style={{ fontSize: 18 }}>Uttryck:</Text>
-                  {BaseLang.Idiom.map((idiom) => (
-                    <Text
-                      style={{ marginLeft: 15, marginVertical: 10 }}
-                      key={idiom.ID}
-                    >
-                      {'\u2023'} {idiom.Content} -{' '}
-                      {TargetLang?.Idiom?.map((idiom) => idiom.Content)}
-                    </Text>
-                  ))}
-                </View>
-              )}
+          <View key={VariantID} style={styles.item}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.title}>{Value}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {/* <Text style={{ color: 'dodgerblue', marginRight: 5 }}>
+                  [{Phonetic?.map((phon) => phon?.Content)}]
+                </Text> */}
+                <TouchableHighlight>
+                  <AntDesign name="sound" size={20} color="dodgerblue" />
+                </TouchableHighlight>
+              </View>
             </View>
+            <View
+              style={{
+                width: 70,
+                height: 30,
+                marginBottom: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 5,
+                backgroundColor: 'dodgerblue',
+              }}
+            >
+              <Text style={{ color: 'ghostwhite' }}>{Type}</Text>
+            </View>
+            <View style={{ flexDirection: 'column' }}>
+              {Type === ('pron.' || 'adv.' || 'adj.' || 'interj.') &&
+                Inflection?.map((inflection, index) => (
+                  <Text style={{ marginBottom: 5, marginLeft: 10 }} key={index}>
+                    {inflection?.Content}
+                  </Text>
+                ))}
+            </View>
+            {/* <View style={{ flexDirection: 'column' }}>
+              {Type === 'subst.' &&
+                Inflection?.map((inflection, index) => (
+                  <Text style={{ marginBottom: 5, marginLeft: 10 }} key={index}>
+                    {index == 0 && <Text>Singular Bestämd Form </Text>}
+                    {index == 1 && <Text>Plural Obestämd Form </Text>}
+                    {index == 2 && <Text>Plural Bestämd Form </Text>}
+                    {' |  '}
+                    <Text style={{ fontWeight: 'bold' }}>
+                      {inflection?.Content}
+                    </Text>
+                  </Text>
+                ))}
+            </View> */}
+            {/* <View style={{ flexDirection: 'column' }}>
+              {Type === 'verb' &&
+                Inflection?.map((inflection, index) => (
+                  <Text key={index} style={{ marginBottom: 5, marginLeft: 10 }}>
+                    {index == 0 && <Text>preteritum </Text>}
+                    {index == 1 && <Text>supinum </Text>}
+                    {index == 2 && <Text>infinitiv </Text>}
+
+                    <Text style={{ fontWeight: 'bold' }}>
+                      {inflection?.Content}
+                    </Text>
+                    {'  |  '}
+                  </Text>
+                ))}
+            </View> */}
+            {/* 
+            <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginVertical: 10,
+                  color: 'dodgerblue',
+                }}
+              >
+                Definition
+              </Text>
+              <Text style={{ marginLeft: 10 }}>
+                {Lexeme[0]?.Definition.Content}
+              </Text>
+            </View> */}
+            {/* <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginVertical: 10,
+                  color: 'dodgerblue',
+                }}
+              >
+                Compound
+              </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ marginLeft: 10 }}>
+                  {Lexeme[0]?.Compound.map((compound) => compound.Content)}
+                </Text>
+              </View>
+            </View> */}
+            {/* <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginVertical: 10,
+                  color: 'dodgerblue',
+                }}
+              >
+                Exempel
+              </Text>
+              <View style={{ marginLeft: 10 }}>
+                <Text>
+                  {Lexeme[0]?.Example?.map((example) => (
+                    <Text key={example?.ID}>{example?.Content}</Text>
+                  ))}
+                </Text>
+              </View>
+            </View> */}
+            {/* {Lexem[0]?.Idioms && (
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    marginVertical: 10,
+                    color: 'dodgerblue',
+                  }}
+                >
+                  Uttryck
+                </Text>
+                <View style={{ marginLeft: 10 }}>
+                  {Lexeme[0]?.Idioms?.map((idiom) => (
+                    <Text key={idiom?.ID}>
+                      {idiom?.Content} {' - '}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+            )} */}
           </View>
         );
       })}
@@ -74,12 +161,18 @@ const TranslationSvenska = ({ translations }) => {
 };
 
 const styles = StyleSheet.create({
-  translateContainer: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 50,
-    marginTop: 50,
+  container: {
+    borderRadius: 25,
     padding: 20,
+    flex: 1,
+  },
+  item: {
+    marginBottom: 50,
+  },
+  title: {
+    fontSize: 40,
+    marginBottom: 5,
+    marginRight: 10,
   },
 });
 

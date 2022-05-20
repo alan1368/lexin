@@ -47,10 +47,10 @@ const TranslationOther = ({ translations }) => {
               <Text style={{ color: 'ghostwhite' }}>{Type}</Text>
             </View>
             <View style={{ flexDirection: 'column' }}>
-              {Type === ('pron.' || 'adv.' || 'adj.') &&
+              {Type === ('pron.' || 'adv.' || 'adj.' || 'interj.') &&
                 BaseLang?.Inflection?.map((inflection, index) => (
                   <Text style={{ marginBottom: 5, marginLeft: 10 }} key={index}>
-                    {inflection.Content}
+                    {inflection?.Content}
                   </Text>
                 ))}
             </View>
@@ -63,12 +63,12 @@ const TranslationOther = ({ translations }) => {
                     {index == 2 && <Text>Plural Bestämd Form </Text>}
                     {' |  '}
                     <Text style={{ fontWeight: 'bold' }}>
-                      {inflection.Content}
+                      {inflection?.Content}
                     </Text>
                   </Text>
                 ))}
             </View>
-            <View style={{ flexDirection: 'column', flexWrap: 'wrap' }}>
+            <View style={{ flexDirection: 'column' }}>
               {Type === 'verb' &&
                 BaseLang?.Inflection?.map((inflection, index) => (
                   <Text key={index} style={{ marginBottom: 5, marginLeft: 10 }}>
@@ -77,7 +77,7 @@ const TranslationOther = ({ translations }) => {
                     {index == 2 && <Text>infinitiv </Text>}
 
                     <Text style={{ fontWeight: 'bold' }}>
-                      {inflection.Content}
+                      {inflection?.Content}
                     </Text>
                     {'  |  '}
                   </Text>
@@ -94,7 +94,9 @@ const TranslationOther = ({ translations }) => {
               >
                 Definition
               </Text>
-              <Text style={{ marginLeft: 10 }}>{BaseLang.Meaning}</Text>
+              <Text style={{ marginLeft: 10 }}>
+                {BaseLang?.Meaning ? BaseLang?.Meaning : BaseLang?.Comment}
+              </Text>
             </View>
             <View>
               <Text
@@ -107,8 +109,10 @@ const TranslationOther = ({ translations }) => {
                 Översättning
               </Text>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={{ marginLeft: 10 }}>{TargetLang.Translation}</Text>
-                {TargetLang?.Synonym && <Text>`({TargetLang.Synonym})`</Text>}
+                <Text style={{ marginLeft: 10 }}>
+                  {TargetLang?.Translation}
+                </Text>
+                {TargetLang?.Synonym && <Text>`({TargetLang?.Synonym})`</Text>}
               </View>
             </View>
             <View>
@@ -124,12 +128,12 @@ const TranslationOther = ({ translations }) => {
               <View style={{ marginLeft: 10 }}>
                 <Text>
                   {BaseLang?.Example?.map((example) => (
-                    <Text key={example.ID}>{example.Content}</Text>
+                    <Text key={example?.ID}>{example?.Content}</Text>
                   ))}
                   {' - '}
 
                   {TargetLang?.Example?.map((example) => (
-                    <Text key={example.ID}>{example.Content}</Text>
+                    <Text key={example?.ID}>{example?.Content}</Text>
                   ))}
                 </Text>
               </View>
@@ -146,10 +150,10 @@ const TranslationOther = ({ translations }) => {
                   Uttryck
                 </Text>
                 <View style={{ marginLeft: 10 }}>
-                  {BaseLang.Idiom.map((idiom) => (
-                    <Text key={idiom.ID}>
-                      {idiom.Content} {' - '}
-                      {TargetLang.Idiom.Content}
+                  {BaseLang?.Idiom?.map((idiom) => (
+                    <Text key={idiom?.ID}>
+                      {idiom?.Content} {' - '}
+                      {TargetLang?.Idiom?.Content}
                     </Text>
                   ))}
                 </View>
@@ -165,8 +169,8 @@ const TranslationOther = ({ translations }) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 25,
-    marginTop: 20,
     padding: 20,
+    flex: 1,
   },
   item: {
     marginBottom: 50,
