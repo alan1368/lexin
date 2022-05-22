@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -9,23 +8,29 @@ import {
   ScrollView,
   TouchableHighlight,
   Animated,
+  StatusBar,
 } from 'react-native';
 import Languages from './components/Languages';
 import SearchBar from './components/SearchBar';
 import TranslationOther from './components/TranslationOther';
 import Navbar from './components/Navbar';
 import TranslationSvenska from './components/TranslationSvenska';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [word, setWord] = useState('');
   const [translations, setTranslations] = useState();
   const [selectedLanguage, setSelectedLanguage] = useState({
     label: '',
-    value: 'swe',
+    value: '',
   });
+  const [notFound, setNotFound] = useState();
   const [error, setError] = useState();
   const [isVisible, setIsVisible] = useState(false);
   console.log(selectedLanguage.value);
+  console.log('word', word);
+  console.log('trans', translations);
   const languageHandler = () => {
     setIsVisible(!isVisible);
   };
@@ -39,11 +44,15 @@ export default function App() {
           {
             headers: {
               Accept: 'application/json',
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json;charset=UTF-8',
             },
           }
         );
         const data = await response.json();
+        data?.Status === 'no unique matching'
+          ? setNotFound(data.Corrections)
+          : setNotFound(['']);
+
         if (data?.Status === 'found') {
           setTranslations(data.Result);
         }
@@ -59,18 +68,47 @@ export default function App() {
   }, [selectedLanguage]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* <Languages
         selectedLanguage={selectedLanguage}
         setSelectedLanguage={setSelectedLanguage}
       /> */}
-      <SearchBar
-        word={word}
-        setWord={setWord}
-        fetchData={fetchData}
-        setSelectedLanguage={setSelectedLanguage}
-        languageHandler={languageHandler}
-      />
+      <SafeAreaView>
+        <SearchBar
+          word={word}
+          setWord={setWord}
+          fetchData={fetchData}
+          setSelectedLanguage={setSelectedLanguage}
+          languageHandler={languageHandler}
+        />
+      </SafeAreaView>
+
+      <View
+        style={{
+          backgroundColor: 'sienna',
+          height: 45,
+          width: '100%',
+          zIndex: -20,
+          top: 100,
+          position: 'absolute',
+          alignItems: 'center',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+      >
+        <Text>
+          🇸🇪
+          <Text style={{ color: 'white', fontSize: 18 }}> Svenska </Text>
+          <MaterialCommunityIcons
+            name="arrow-left-right"
+            size={24}
+            color="white"
+          />{' '}
+          <Text style={{ color: 'white', fontSize: 18 }}>
+            {!selectedLanguage.value ? 'Välj Språk' : selectedLanguage.label}
+          </Text>
+        </Text>
+      </View>
       <View
         style={{
           backgroundColor: 'ghostwhite',
@@ -84,7 +122,7 @@ export default function App() {
           flex: 1,
         }}
       >
-        {isVisible ? (
+        {/* {isVisible ? (
           <Languages
             setSelectedLanguage={setSelectedLanguage}
             languageHandler={languageHandler}
@@ -93,17 +131,25 @@ export default function App() {
           <TranslationSvenska translations={translations} />
         ) : (
           <TranslationOther translations={translations} />
+        )} */}
+        {isVisible ? (
+          <Languages
+            setSelectedLanguage={setSelectedLanguage}
+            languageHandler={languageHandler}
+          />
+        ) : (
+          <TranslationOther translations={translations} />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#174367',
+    paddingTop: StatusBar.currentHeight,
     flex: 1,
-    paddingTop: 50,
     justifyContent: 'space-between',
   },
 });

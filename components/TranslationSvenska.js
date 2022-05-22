@@ -55,7 +55,7 @@ const TranslationSvenska = ({ translations }) => {
                   </Text>
                 ))}
             </View>
-            {/* <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: 'column' }}>
               {Type === 'subst.' &&
                 Inflection?.map((inflection, index) => (
                   <Text style={{ marginBottom: 5, marginLeft: 10 }} key={index}>
@@ -68,8 +68,8 @@ const TranslationSvenska = ({ translations }) => {
                     </Text>
                   </Text>
                 ))}
-            </View> */}
-            {/* <View style={{ flexDirection: 'column' }}>
+            </View>
+            <View style={{ flexDirection: 'column' }}>
               {Type === 'verb' &&
                 Inflection?.map((inflection, index) => (
                   <Text key={index} style={{ marginBottom: 5, marginLeft: 10 }}>
@@ -83,8 +83,8 @@ const TranslationSvenska = ({ translations }) => {
                     {'  |  '}
                   </Text>
                 ))}
-            </View> */}
-            {/* 
+            </View>
+
             <View>
               <Text
                 style={{
@@ -96,10 +96,10 @@ const TranslationSvenska = ({ translations }) => {
                 Definition
               </Text>
               <Text style={{ marginLeft: 10 }}>
-                {Lexeme[0]?.Definition.Content}
+                {Lexeme && Lexeme[0]?.Definition?.Content}
               </Text>
-            </View> */}
-            {/* <View>
+            </View>
+            <View>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -109,13 +109,16 @@ const TranslationSvenska = ({ translations }) => {
               >
                 Compound
               </Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={{ marginLeft: 10 }}>
-                  {Lexeme[0]?.Compound.map((compound) => compound.Content)}
-                </Text>
+              <View style={{ flexDirection: 'column' }}>
+                {Lexeme &&
+                  Lexeme[0]?.Compound?.map((compound) => (
+                    <Text key={compound?.ID} style={{ marginLeft: 10 }}>
+                      {compound?.Content}
+                    </Text>
+                  ))}
               </View>
-            </View> */}
-            {/* <View>
+            </View>
+            <View>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -126,14 +129,13 @@ const TranslationSvenska = ({ translations }) => {
                 Exempel
               </Text>
               <View style={{ marginLeft: 10 }}>
-                <Text>
-                  {Lexeme[0]?.Example?.map((example) => (
+                {Lexeme &&
+                  Lexeme[0]?.Example?.map((example) => (
                     <Text key={example?.ID}>{example?.Content}</Text>
                   ))}
-                </Text>
               </View>
-            </View> */}
-            {/* {Lexem[0]?.Idioms && (
+            </View>
+            {Lexeme && Lexeme[0]?.Idioms && (
               <View>
                 <Text
                   style={{
@@ -145,14 +147,13 @@ const TranslationSvenska = ({ translations }) => {
                   Uttryck
                 </Text>
                 <View style={{ marginLeft: 10 }}>
-                  {Lexeme[0]?.Idioms?.map((idiom) => (
-                    <Text key={idiom?.ID}>
-                      {idiom?.Content} {' - '}
-                    </Text>
-                  ))}
+                  {Lexeme &&
+                    Lexeme[0]?.Idioms?.map((idiom) => (
+                      <Text key={idiom?.ID}>{idiom?.Content}</Text>
+                    ))}
                 </View>
               </View>
-            )} */}
+            )}
           </View>
         );
       })}
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 5,
     marginRight: 10,
   },

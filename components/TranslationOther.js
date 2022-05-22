@@ -83,6 +83,40 @@ const TranslationOther = ({ translations }) => {
                   </Text>
                 ))}
             </View>
+            <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginVertical: 10,
+                  color: 'dodgerblue',
+                }}
+              >
+                Översättning
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginLeft: 10,
+                    color: 'yellowgreen',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {TargetLang?.Translation}
+                </Text>
+                {TargetLang?.Synonym && (
+                  <Text style={{ marginLeft: 10 }}>
+                    {' '}
+                    ({TargetLang?.Synonym}){' '}
+                  </Text>
+                )}
+              </View>
+            </View>
 
             <View>
               <Text
@@ -98,46 +132,33 @@ const TranslationOther = ({ translations }) => {
                 {BaseLang?.Meaning ? BaseLang?.Meaning : BaseLang?.Comment}
               </Text>
             </View>
-            <View>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  marginVertical: 10,
-                  color: 'dodgerblue',
-                }}
-              >
-                Översättning
-              </Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={{ marginLeft: 10 }}>
-                  {TargetLang?.Translation}
-                </Text>
-                {TargetLang?.Synonym && <Text>`({TargetLang?.Synonym})`</Text>}
-              </View>
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  marginVertical: 10,
-                  color: 'dodgerblue',
-                }}
-              >
-                Exempel
-              </Text>
-              <View style={{ marginLeft: 10 }}>
-                <Text>
-                  {BaseLang?.Example?.map((example) => (
-                    <Text key={example?.ID}>{example?.Content}</Text>
-                  ))}
-                  {' - '}
 
-                  {TargetLang?.Example?.map((example) => (
-                    <Text key={example?.ID}>{example?.Content}</Text>
-                  ))}
+            {BaseLang?.Example && (
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    marginVertical: 10,
+                    color: 'dodgerblue',
+                  }}
+                >
+                  Example
                 </Text>
+                <View style={{ marginLeft: 10 }}>
+                  {BaseLang?.Example?.map((example, index) => (
+                    <Text key={example?.ID} style={{ marginVertical: 5 }}>
+                      ➤ {example?.Content} {' - '}
+                      {TargetLang?.Example && (
+                        <Text style={{ color: 'steelblue' }}>
+                          {TargetLang?.Example[index]?.Content}
+                        </Text>
+                      )}
+                    </Text>
+                  ))}
+                </View>
               </View>
-            </View>
+            )}
+
             {BaseLang?.Idiom && (
               <View>
                 <Text
@@ -150,10 +171,37 @@ const TranslationOther = ({ translations }) => {
                   Uttryck
                 </Text>
                 <View style={{ marginLeft: 10 }}>
-                  {BaseLang?.Idiom?.map((idiom) => (
-                    <Text key={idiom?.ID}>
-                      {idiom?.Content} {' - '}
-                      {TargetLang?.Idiom?.Content}
+                  {BaseLang?.Idiom?.map((idiom, index) => (
+                    <Text key={idiom?.ID} style={{ marginVertical: 5 }}>
+                      ➤ {idiom?.Content} {' - '}
+                      {TargetLang?.Idiom && (
+                        <Text style={{ color: 'steelblue' }}>
+                          {TargetLang?.Idiom[index]?.Content}
+                        </Text>
+                      )}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+            )}
+            {BaseLang?.Compound && (
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    marginVertical: 10,
+                    color: 'dodgerblue',
+                  }}
+                >
+                  Sammansättningar
+                </Text>
+                <View style={{ marginLeft: 10 }}>
+                  {BaseLang?.Compound?.map((compound, index) => (
+                    <Text key={compound?.ID} style={{ marginVertical: 5 }}>
+                      {compound?.Content} {' - '}
+                      <Text style={{ color: 'rebeccapurple' }}>
+                        {TargetLang?.Compound[index]?.Content}
+                      </Text>
                     </Text>
                   ))}
                 </View>
@@ -176,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 5,
     marginRight: 10,
   },
