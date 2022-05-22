@@ -112,7 +112,7 @@ export default function App() {
       <View
         style={{
           backgroundColor: 'ghostwhite',
-          height: '90%',
+          height: '93%',
           width: '100%',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,

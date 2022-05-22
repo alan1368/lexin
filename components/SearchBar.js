@@ -63,10 +63,7 @@ const SearchBar = ({
                 placeholderTextColor={'silver'}
               />
               {word.length > 0 && (
-                <TouchableOpacity
-                  onPress={() => setWord('')}
-                  style={{ borderWidth: 2, height: '100%' }}
-                >
+                <TouchableOpacity onPress={() => setWord('')}>
                   <EvilIcons name="close" size={30} color="silver" />
                 </TouchableOpacity>
               )}
